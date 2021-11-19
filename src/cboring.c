@@ -8,30 +8,8 @@
 #include <inttypes.h>
 
 size_t cbor_item_length(const uint8_t *buffer, size_t len) {
-    uint64_t argument;
-    size_t head_len = cbor_get_argument(buffer, len, &argument);
-    switch(*buffer >> 5) {
-    case 0:
-    case 1:
-        /* Integer items are as long as head */
-        return head_len;
-    case 2:
-    case 3:
-        /* Strings */
-        return cbor_string_length(buffer, len);
-    case 4:
-        /* Arrays */
-        return cbor_array_length(buffer, len);
-    case 5:
-        /* Maps */
-        return cbor_map_length(buffer, len);
-    case 6:
-    case 7:
-    default:
-        return head_len;
-    }
+    return cbor_item_size(buffer, len);
 }
-
 
 
 size_t cbor_print_item(const uint8_t *buffer, size_t len, int indentation, const char *endline) {

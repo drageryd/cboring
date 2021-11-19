@@ -1,11 +1,12 @@
 #include "cboring_string.h"
 #include "cboring_internal.h"
 
-size_t cbor_string_length(const uint8_t *buffer, size_t len) {
+/* Check if item is a string */
+bool cbor_is_string(const uint8_t *buffer, size_t len) {
     uint64_t argument;
-    size_t head_len = cbor_get_argument(buffer, len, &argument);
-    /* TODO: Indefenite */
-    return head_len + argument;
+    cbor_get_argument(buffer, len, &argument);
+    return MAJOR_TYPE(buffer) == CBOR_BYTE_STRING ||
+        MAJOR_TYPE(buffer) == CBOR_TEXT_STRING;
 }
 
 /* Get any string type */

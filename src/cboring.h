@@ -10,7 +10,6 @@
 #include "cboring_array.h"
 
 size_t cbor_item_length(const uint8_t *buffer, size_t len);
-
 size_t cbor_print_item(const uint8_t *buffer, size_t len, int indentation, const char *endline);
 
 #endif
