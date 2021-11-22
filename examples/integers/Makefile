@@ -1,0 +1,33 @@
+NAME = integers
+BUILD_DIR = build
+CC = gcc
+
+# These flags are strict to keep the library portable
+# You should define your own flags depending on your platform
+CFLAGS = -Wall -Wextra -Werror -std=c99 -pedantic
+
+# Example source file
+SOURCES += main.c
+
+# cboring sources
+CBORING_ROOT = ../..
+CFLAGS += -I$(CBORING_ROOT)/src
+VPATH += $(CBORING_ROOT)/src
+SOURCES += $(notdir $(wildcard $(CBORING_ROOT)/src/*.c))
+
+# Generate object files
+OBJECTS += $(addprefix $(BUILD_DIR)/,$(SOURCES:.c=.o))
+
+all: $(NAME)
+
+$(NAME): $(BUILD_DIR) $(OBJECTS)
+	$(CC) $(CFLAGS) $(OBJECTS) $(LIBS) -o $@
+
+$(BUILD_DIR):
+	@mkdir -p $(BUILD_DIR)
+
+$(BUILD_DIR)/%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	@rm -rf $(BUILD_DIR) $(NAME)
