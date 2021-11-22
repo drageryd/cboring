@@ -56,3 +56,34 @@ size_t cbor_map_get(const uint8_t *buffer, size_t len, const char *key) {
     /* End of loop reached if item is not found */
     return len;
 }
+
+/* Search map for nested key */
+/* TODO */
+
+/* Get map item by index */
+size_t cbor_map_index_key(const uint8_t *buffer, size_t len, size_t index) {
+    uint64_t argument;
+    size_t map_offset = cbor_get_argument(buffer, len, &argument);
+    const size_t map_length = cbor_map_length(buffer, len);
+    if (index >= map_length) {
+        /* Index out of range */
+        return len;
+    }
+    /* Go past "index" number of items to get to desired item */
+    for (size_t i = 0; i < index; i++) {
+        /* Move to next key by incrementing offset past key and value */
+        map_offset += cbor_item_size(buffer + map_offset, len - map_offset);
+        map_offset += cbor_item_size(buffer + map_offset, len - map_offset);
+    }
+    /* End of loop reached array_offset is now at array index */
+    return map_offset;
+}
+
+size_t cbor_map_index_value(const uint8_t *buffer, size_t len, size_t index) {
+    size_t map_offset = cbor_map_index_key(buffer, len, index);
+    /* If the key exists, the value is next to it */
+    if (map_offset != len) {
+        map_offset += cbor_item_size(buffer + map_offset, len - map_offset);
+    }
+    return map_offset;
+}
