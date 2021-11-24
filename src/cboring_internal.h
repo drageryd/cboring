@@ -35,6 +35,8 @@ size_t cbor_getn(const uint8_t *buffer, size_t n, uint64_t *data);
 size_t cbor_setn(uint8_t *buffer, size_t n, uint64_t data);
 size_t cbor_get_argument(const uint8_t *buffer, size_t len, uint64_t *argument);
 size_t cbor_set_argument(uint8_t *buffer, size_t maxlen, uint8_t major_type, int64_t argument);
+size_t cbor_begin_indefinite(uint8_t *buffer, size_t maxlen, uint8_t major_type);
+size_t cbor_end_indefinite(uint8_t *buffer, size_t maxlen);
 
 size_t cbor_item_size(const uint8_t *buffer, size_t len);
 

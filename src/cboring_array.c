@@ -46,3 +46,16 @@ size_t cbor_array_index(const uint8_t *buffer, size_t len, size_t index) {
     /* End of loop reached array_offset is now at array index */
     return array_offset;
 }
+
+/* Encode arrays */
+size_t cbor_begin_definite_array(uint8_t *buffer, size_t maxlen, size_t size) {
+    return cbor_set_argument(buffer, maxlen, CBOR_ARRAY, size);
+}
+
+size_t cbor_begin_indefinite_array(uint8_t *buffer, size_t maxlen) {
+    return cbor_begin_indefinite(buffer, maxlen, CBOR_ARRAY);
+}
+
+size_t cbor_end_indefinite_array(uint8_t *buffer, size_t maxlen) {
+    return cbor_end_indefinite(buffer, maxlen);
+}

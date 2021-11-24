@@ -87,3 +87,16 @@ size_t cbor_map_index_value(const uint8_t *buffer, size_t len, size_t index) {
     }
     return map_offset;
 }
+
+/* Encode maps */
+size_t cbor_begin_definite_map(uint8_t *buffer, size_t maxlen, size_t size) {
+    return cbor_set_argument(buffer, maxlen, CBOR_MAP, size);
+}
+
+size_t cbor_begin_indefinite_map(uint8_t *buffer, size_t maxlen) {
+    return cbor_begin_indefinite(buffer, maxlen, CBOR_MAP);
+}
+
+size_t cbor_end_indefinite_map(uint8_t *buffer, size_t maxlen) {
+    return cbor_end_indefinite(buffer, maxlen);
+}

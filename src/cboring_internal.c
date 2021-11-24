@@ -97,6 +97,24 @@ size_t cbor_set_argument(uint8_t *buffer, size_t maxlen, uint8_t major_type, int
     return cbor_setn(buffer + 1, additional_bytes, (uint64_t)argument) + 1;
 }
 
+size_t cbor_begin_indefinite(uint8_t *buffer, size_t maxlen, uint8_t major_type) {
+    /* Indefinite length types needs one byte */
+    if (maxlen == 0) {
+        return 0;
+    }
+    *buffer = major_type << MAJOR_TYPE_OFFSET | CBOR_INDEFINITE;
+    return 1;
+}
+
+size_t cbor_end_indefinite(uint8_t *buffer, size_t maxlen) {
+    /* Stop character needs one byte */
+    if (maxlen == 0) {
+        return 0;
+    }
+    *buffer = CBOR_STOP_CODE;
+    return 1;
+}
+
 static size_t cbor_string_size(const uint8_t *buffer, size_t len) {
     uint64_t argument;
     size_t head_len = cbor_get_argument(buffer, len, &argument);
