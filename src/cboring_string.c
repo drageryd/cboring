@@ -1,5 +1,6 @@
 #include "cboring_string.h"
 #include "cboring_internal.h"
+#include <string.h>
 
 /* Check if item is a string */
 bool cbor_is_string(const uint8_t *buffer, size_t len) {
@@ -44,3 +45,23 @@ size_t cbor_get_string_length(const uint8_t *buffer, size_t len) {
     }
 }
 
+/* Encode a null terminated string */
+size_t cbor_set_string(uint8_t *buffer, size_t maxlen, const char *str)
+{
+    /* Store the length as argument
+     * maxlen is subtracted to account for length of string */
+    const size_t sl = strlen(str);
+    if (maxlen < sl) {
+        return 0;
+    }
+    size_t al = cbor_set_argument(buffer, maxlen - sl, CBOR_TEXT_STRING, sl);
+
+    /* If buffer cant hold string, abort */
+    if (al == 0) {
+        return 0;
+    }
+
+    /* Store string in following bytes */
+    memcpy(buffer + al, str, sl);
+    return al + sl;
+}

@@ -1,8 +1,6 @@
 #include "cboring_internal.h"
-
 #include <stddef.h>
 #include <stdint.h>
-#include <stdio.h>
 #include <assert.h>
 
 /* Fetch n network endian bytes
@@ -17,9 +15,22 @@ size_t cbor_getn(const uint8_t *buffer, size_t n, uint64_t *data) {
     return n;
 }
 
+/* Store n network endian bytes
+ * Return value: bytes loaded */
+size_t cbor_setn(uint8_t *buffer, size_t n, uint64_t data) {
+    /* Start at end of buffer beyond where lower byte is stored */
+    buffer += n;
+    for (size_t i = 0; i < n; i++) {
+        buffer--;
+        *buffer = data & 0xff;
+        data >>= 8;
+    }
+    return n;
+}
+
 /* Get argument from head
  * This can be embedded in the first byte or
- * in the following 1, 2, 4 or 8 bytes 
+ * in the following 1, 2, 4 or 8 bytes
  * Return value: length of head */
 size_t cbor_get_argument(const uint8_t *buffer, size_t len, uint64_t *argument) {
     /* The initial byte has major type in upper 3 bits and
@@ -46,6 +57,44 @@ size_t cbor_get_argument(const uint8_t *buffer, size_t len, uint64_t *argument) 
         /* Not well-formed */
         assert(0);
     }
+}
+
+/* Set argument
+ * This can be embedded in the first byte or
+ * in the following 1, 2, 4 or 8 bytes 
+ * Return value: length of head */
+size_t cbor_set_argument(uint8_t *buffer, size_t maxlen, uint8_t major_type, int64_t argument) {
+    /* Shift major type up */
+    major_type <<= MAJOR_TYPE_OFFSET;
+
+    /* Decide where the value should be stored
+     * < 24 fits in the head additional information */
+    size_t additional_bytes = 0;
+    if (argument < CBOR_FOLLOWING_1) {
+        major_type |= (uint8_t)argument & ADDITIONAL_INFO_MASK;
+    }
+    else if (argument <= UINT8_MAX) {
+        additional_bytes = 1;
+        major_type |= CBOR_FOLLOWING_1 & ADDITIONAL_INFO_MASK;
+    } else if (argument <= UINT16_MAX) {
+        additional_bytes = 2;
+        major_type |= CBOR_FOLLOWING_2 & ADDITIONAL_INFO_MASK;
+    } else if (argument <= UINT32_MAX) {
+        additional_bytes = 4;
+        major_type |= CBOR_FOLLOWING_4 & ADDITIONAL_INFO_MASK;
+    } else {
+        additional_bytes = 8;
+        major_type |= CBOR_FOLLOWING_8 & ADDITIONAL_INFO_MASK;
+    }
+
+    /* Is the buffer large enough for the head + additional data */
+    if (maxlen < additional_bytes + 1) {
+        return 0;
+    }
+
+    /* Store head and data */
+    *buffer = major_type;
+    return cbor_setn(buffer + 1, additional_bytes, (uint64_t)argument) + 1;
 }
 
 static size_t cbor_string_size(const uint8_t *buffer, size_t len) {

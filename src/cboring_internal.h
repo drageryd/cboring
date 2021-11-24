@@ -26,11 +26,15 @@ enum {
 
 /* Major type is stored in the upper 5 bits of the head
  * Takes any CBOR buffer as input and dereferences the first byte */
-#define MAJOR_TYPE(x) (*x >> 5)
-#define ADDITIONAL_INFO(x) (*x & 0x1f)
+#define MAJOR_TYPE_OFFSET 5
+#define MAJOR_TYPE(x) (*x >> MAJOR_TYPE_OFFSET)
+#define ADDITIONAL_INFO_MASK 0x1f
+#define ADDITIONAL_INFO(x) (*x & ADDITIONAL_INFO_MASK)
 
 size_t cbor_getn(const uint8_t *buffer, size_t n, uint64_t *data);
+size_t cbor_setn(uint8_t *buffer, size_t n, uint64_t data);
 size_t cbor_get_argument(const uint8_t *buffer, size_t len, uint64_t *argument);
+size_t cbor_set_argument(uint8_t *buffer, size_t maxlen, uint8_t major_type, int64_t argument);
 
 size_t cbor_item_size(const uint8_t *buffer, size_t len);
 
