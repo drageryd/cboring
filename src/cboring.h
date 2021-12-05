@@ -8,6 +8,8 @@
 #include "cboring_string.h"
 #include "cboring_map.h"
 #include "cboring_array.h"
+#include "cboring_simple.h"
+#include "cboring_float.h"
 
 size_t cbor_item_length(const uint8_t *buffer, size_t len);
 size_t cbor_print_item(const uint8_t *buffer, size_t len, int indentation, const char *endline);

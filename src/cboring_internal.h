@@ -16,6 +16,10 @@ enum {
 };
 
 enum {
+    CBOR_FALSE = 20,
+    CBOR_TRUE = 21,
+    CBOR_NULL = 22,
+    CBOR_UNDEFINED = 23,
     CBOR_FOLLOWING_1 = 24,
     CBOR_FOLLOWING_2,
     CBOR_FOLLOWING_4,
