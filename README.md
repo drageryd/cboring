@@ -21,7 +21,7 @@ repo, build and link the files and use it.
    
 ## RFC 8949: CBOR notes
 
-[RFC8949](https://www.rfc-editor.org/rfc/rfc8949.htm)
+[RFC8949](https://www.rfc-editor.org/rfc/rfc8949.html)
 
 The underlying data model is an extended version of the JSON data
 model
