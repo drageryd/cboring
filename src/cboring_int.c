@@ -21,7 +21,7 @@ int64_t cbor_get_int(const uint8_t *buffer, size_t len) {
     case CBOR_UNSIGNED_INTEGER:
         return argument;
     case CBOR_NEGATIVE_INTEGER:
-        return -1 - argument;
+        return -1 - (int64_t)argument;
     default:
         return 0;
     }
