@@ -57,6 +57,7 @@ size_t cbor_get_argument(const uint8_t *buffer, size_t len, uint64_t *argument) 
         /* Not well-formed */
         assert(0);
     }
+    return 0;
 }
 
 /* Set argument
