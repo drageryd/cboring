@@ -29,15 +29,15 @@ uint8_t test_nested_array_indef[] = {
 int main()
 {
     /* Generally these functions are a bit to generic so they should not be accessible for the user */
-    cbor_print_item(test_map, sizeof(test_map), 0, "\n");
-    cbor_print_item(test_nested_map, sizeof(test_nested_map), 0, "\n");
-    cbor_print_item(test_nested_array, sizeof(test_nested_array), 0, "\n");
+    cboring_print_item(test_map, sizeof(test_map), 0, "\n");
+    cboring_print_item(test_nested_map, sizeof(test_nested_map), 0, "\n");
+    cboring_print_item(test_nested_array, sizeof(test_nested_array), 0, "\n");
     printf("Length of nested item should be %zu: %zu\n",
            sizeof(test_nested_array),
-           cbor_item_length(test_nested_array, sizeof(test_nested_array)));
+           cboring_item_length(test_nested_array, sizeof(test_nested_array)));
     printf("Length of nested item should be %zu: %zu\n",
            sizeof(test_nested_array_indef),
-           cbor_item_length(test_nested_array_indef, sizeof(test_nested_array_indef)));
+           cboring_item_length(test_nested_array_indef, sizeof(test_nested_array_indef)));
     
     return 0;
 }

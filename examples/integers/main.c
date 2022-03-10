@@ -19,9 +19,9 @@ uint8_t test_uint64[] = {0x1B, 0x11, 0x22, 0x10, 0xF4, 0x7D, 0xE9, 0x81, 0x15};
 uint8_t test_negint[] = {0x3A, 0x00, 0x01, 0xE2, 0x3F};
 
 void test_decode(const uint8_t *buffer, size_t len, int64_t expected) {
-    int64_t res = cbor_get_int(buffer, len);
+    int64_t res = cboring_get_int(buffer, len);
     printf("This is an integer (%s) and should be %" PRId64 ": %" PRId64 " (%s)\n",
-           cbor_is_int(buffer, len) ? "yes" : "no",
+           cboring_is_int(buffer, len) ? "yes" : "no",
            expected,
            res,
            (res == expected) ? "yes" : "no");
@@ -38,7 +38,7 @@ void print_buffer(const uint8_t *buffer, size_t len) {
 
 void test_encode(int64_t val, const uint8_t *expected, size_t elen) {
     uint8_t buffer[256];
-    size_t len = cbor_set_int(buffer, sizeof(buffer), val);
+    size_t len = cboring_set_int(buffer, sizeof(buffer), val);
     /* Evaluate buffer */
     printf("Encoding result for %" PRId64 ": \n", val);
     printf(" Should be: ");

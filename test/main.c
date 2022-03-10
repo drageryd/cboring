@@ -23,27 +23,27 @@ size_t decode(const uint8_t *hex, size_t hex_len, char *dest, size_t dest_len) {
         *dest = '\0';
     }
     /* Decode integer */
-    if (cbor_is_int(hex, hex_len)) {
-        size_t r = snprintf(dest, dest_len, "%ld", cbor_get_int(hex, hex_len));
+    if (cboring_is_int(hex, hex_len)) {
+        size_t r = snprintf(dest, dest_len, "%ld", cboring_get_int(hex, hex_len));
         if (r == 0) {
             return 0;
         }
         len += r;
     }
     /* Decode string */
-    else if (cbor_is_text_string(hex, hex_len)) {
+    else if (cboring_is_text_string(hex, hex_len)) {
         size_t r = snprintf(dest, dest_len, "\"%.*s\"",
-                            (int)cbor_get_string_length(hex, hex_len),
-                            cbor_get_string_handle(hex, hex_len));
+                            (int)cboring_get_string_length(hex, hex_len),
+                            cboring_get_string_handle(hex, hex_len));
         if (r == 0) {
             return 0;
         }
         len += r;
     }
-    else if (cbor_is_byte_string(hex, hex_len)) {
+    else if (cboring_is_byte_string(hex, hex_len)) {
         size_t r = snprintf(dest, dest_len, "h'");
-        size_t l = cbor_get_string_length(hex, hex_len);
-        const uint8_t *str = cbor_get_string_handle(hex, hex_len);
+        size_t l = cboring_get_string_length(hex, hex_len);
+        const uint8_t *str = cboring_get_string_handle(hex, hex_len);
         for (size_t i = 0; i < l; i++) {
             size_t t = snprintf(dest + r, dest_len - r, "%02X", str[i]);
             if (t == 0) {
@@ -58,29 +58,29 @@ size_t decode(const uint8_t *hex, size_t hex_len, char *dest, size_t dest_len) {
         len += r;
     }
     /* Decode floats */
-    else if (cbor_is_half(hex, hex_len)) {
-        size_t r = snprintf(dest, dest_len, "%e", cbor_get_half(hex, hex_len));
+    else if (cboring_is_half(hex, hex_len)) {
+        size_t r = snprintf(dest, dest_len, "%e", cboring_get_half(hex, hex_len));
         if (r == 0) {
             return 0;
         }
         len += r;
     }
-    else if (cbor_is_float(hex, hex_len)) {
-        size_t r = snprintf(dest, dest_len, "%e", cbor_get_float(hex, hex_len));
+    else if (cboring_is_float(hex, hex_len)) {
+        size_t r = snprintf(dest, dest_len, "%e", cboring_get_float(hex, hex_len));
         if (r == 0) {
             return 0;
         }
         len += r;
     }
-    else if (cbor_is_double(hex, hex_len)) {
-        size_t r = snprintf(dest, dest_len, "%e", cbor_get_double(hex, hex_len));
+    else if (cboring_is_double(hex, hex_len)) {
+        size_t r = snprintf(dest, dest_len, "%e", cboring_get_double(hex, hex_len));
         if (r == 0) {
             return 0;
         }
         len += r;
     }
     /* Decode booleans */
-    else if (cbor_is_simple(hex, hex_len)) {
+    else if (cboring_is_simple(hex, hex_len)) {
         const char *simples[] = {
             "true",
             "false",
@@ -88,11 +88,11 @@ size_t decode(const uint8_t *hex, size_t hex_len, char *dest, size_t dest_len) {
             "undefined"
         };
         const char *s;
-        if (cbor_is_true(hex, hex_len)) {
+        if (cboring_is_true(hex, hex_len)) {
             s = simples[0];
-        } else if (cbor_is_false(hex, hex_len)) {
+        } else if (cboring_is_false(hex, hex_len)) {
             s = simples[1];
-        } else if (cbor_is_null(hex, hex_len)) {
+        } else if (cboring_is_null(hex, hex_len)) {
             s = simples[2];
         } else {
             s = simples[3];
@@ -104,9 +104,9 @@ size_t decode(const uint8_t *hex, size_t hex_len, char *dest, size_t dest_len) {
         len += r;
     }
     /* Maps recursive */
-    else if (cbor_is_map(hex, hex_len)) {
+    else if (cboring_is_map(hex, hex_len)) {
         size_t r, o;
-        size_t map_length = cbor_map_length(hex, hex_len);
+        size_t map_length = cboring_map_length(hex, hex_len);
         if (len >= dest_len) {
             return 0;
         }
@@ -122,7 +122,7 @@ size_t decode(const uint8_t *hex, size_t hex_len, char *dest, size_t dest_len) {
                 dest[len] = '\0';
             }
 
-            o = cbor_map_index_key(hex, hex_len, i);
+            o = cboring_map_index_key(hex, hex_len, i);
             r = decode(hex + o, hex_len - o, dest + len, dest_len - len);
             if (r == 0) {
                 return 0;
@@ -136,7 +136,7 @@ size_t decode(const uint8_t *hex, size_t hex_len, char *dest, size_t dest_len) {
             dest[len++] = ' ';
             dest[len] = '\0';
 
-            o = cbor_map_index_value(hex, hex_len, i);
+            o = cboring_map_index_value(hex, hex_len, i);
             r = decode(hex + o, hex_len - o, dest + len, dest_len - len);
             if (r == 0) {
                 return 0;
@@ -150,9 +150,9 @@ size_t decode(const uint8_t *hex, size_t hex_len, char *dest, size_t dest_len) {
         dest[len] = '\0';
     }
     /* Arrays recursive */
-    else if (cbor_is_array(hex, hex_len)) {
+    else if (cboring_is_array(hex, hex_len)) {
         size_t r, o;
-        size_t array_length = cbor_array_length(hex, hex_len);
+        size_t array_length = cboring_array_length(hex, hex_len);
         if (len >= dest_len) {
             return 0;
         }
@@ -168,7 +168,7 @@ size_t decode(const uint8_t *hex, size_t hex_len, char *dest, size_t dest_len) {
                 dest[len] = '\0';
             }
 
-            o = cbor_array_index(hex, hex_len, i);
+            o = cboring_array_index(hex, hex_len, i);
             r = decode(hex + o, hex_len - o, dest + len, dest_len - len);
             if (r == 0) {
                 return 0;

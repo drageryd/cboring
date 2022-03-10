@@ -29,30 +29,30 @@ uint8_t test_nested_array_indef[] = {
 
 void test_decode(const uint8_t *buffer, size_t len, const char *key, size_t index) {
     printf("Item is a map (%s) of length: %zu\n",
-           cbor_is_map(buffer, len) ? "yes" : "no",
-           cbor_map_length(buffer, len));
+           cboring_is_map(buffer, len) ? "yes" : "no",
+           cboring_map_length(buffer, len));
 
     /* Verify that item is a map */
-    if (cbor_is_map(buffer, len)) {
+    if (cboring_is_map(buffer, len)) {
         printf("Getting value at key %s\n", key);
-        size_t offset = cbor_map_get(buffer, len, key);
+        size_t offset = cboring_map_get(buffer, len, key);
 
         /* If sub object, index it */
-        if (cbor_is_array(buffer + offset, len - offset)) {
+        if (cboring_is_array(buffer + offset, len - offset)) {
             printf(" Indexing sub array at index %zu\n", index);
-            offset += cbor_array_index(buffer + offset, len - offset, index);
-        } else if (cbor_is_map(buffer + offset, len - offset)) {
+            offset += cboring_array_index(buffer + offset, len - offset, index);
+        } else if (cboring_is_map(buffer + offset, len - offset)) {
             printf(" Indexing sub map value at index %zu\n", index);
-            offset += cbor_map_index_value(buffer + offset, len - offset, index);
+            offset += cboring_map_index_value(buffer + offset, len - offset, index);
         }
 
         /* If item is of a certain type print it */
-        if (cbor_is_int(buffer + offset, len - offset)) {
-            printf("  Value integer: %ld\n", cbor_get_int(buffer + offset, len - offset));
-        } else if (cbor_is_string(buffer + offset, len - offset)) {
+        if (cboring_is_int(buffer + offset, len - offset)) {
+            printf("  Value integer: %ld\n", cboring_get_int(buffer + offset, len - offset));
+        } else if (cboring_is_string(buffer + offset, len - offset)) {
             printf("  Value string: %.*s\n",
-                   (int)cbor_get_string_length(buffer + offset, len - offset),
-                   cbor_get_string_handle(buffer + offset, len - offset));
+                   (int)cboring_get_string_length(buffer + offset, len - offset),
+                   cboring_get_string_handle(buffer + offset, len - offset));
         }
     }
 }
@@ -72,21 +72,21 @@ void test_encode(const char **keys, const int64_t *values, size_t size, bool ind
 
     /* Start array */
     if (indefinite) {
-        len = cbor_begin_indefinite_map(buffer, sizeof(buffer));
+        len = cboring_begin_indefinite_map(buffer, sizeof(buffer));
     } else {
-        len = cbor_begin_definite_map(buffer, sizeof(buffer), size);
+        len = cboring_begin_definite_map(buffer, sizeof(buffer), size);
     }
 
     /* Add contents keys and values */
     for (size_t i = 0; i < size; i++) {
         /* In a real application remember to check the return value if the set succeeded */
-        len += cbor_set_string(buffer + len, sizeof(buffer) - len, keys[i]);
-        len += cbor_set_int(buffer + len, sizeof(buffer) - len, values[i]);
+        len += cboring_set_string(buffer + len, sizeof(buffer) - len, keys[i]);
+        len += cboring_set_int(buffer + len, sizeof(buffer) - len, values[i]);
     }
 
     /* End if indefinite */
     if (indefinite) {
-        len += cbor_end_indefinite_map(buffer + len, sizeof(buffer) - len);
+        len += cboring_end_indefinite_map(buffer + len, sizeof(buffer) - len);
     }
     /* Evaluate buffer */
     printf("Encoding result for array\n");

@@ -19,24 +19,24 @@ uint8_t test_nested_array[] = {
 
 void test_decode(const uint8_t *buffer, size_t len, size_t index) {
     printf("Item is an array (%s) of length: %zu\n",
-           cbor_is_array(buffer, len) ? "yes" : "no",
-           cbor_array_length(buffer, len));
+           cboring_is_array(buffer, len) ? "yes" : "no",
+           cboring_array_length(buffer, len));
 
     /* Get index from array */
     /* Verify that root item is an array */
-    if (cbor_is_array(buffer, len)) {
+    if (cboring_is_array(buffer, len)) {
         /* Get index from array */
-        size_t item_offset = cbor_array_index(buffer, len, index);
+        size_t item_offset = cboring_array_index(buffer, len, index);
         /* Index is available if offset is less than item size */
         if (item_offset < len) {
             /* Adjust item pointer and size for value */
             buffer += item_offset;
             len -= item_offset;
             /* In this example we are expecting an integer as value */
-            if (cbor_is_int(buffer, len)) {
+            if (cboring_is_int(buffer, len)) {
                 /* We found the expected key value pair
                  * and the value is of the expected type */
-                printf("Got item at index in array: %zu: %ld\n", index, cbor_get_int(buffer, len));
+                printf("Got item at index in array: %zu: %ld\n", index, cboring_get_int(buffer, len));
             }
         }
     }
@@ -56,20 +56,20 @@ void test_encode(const int64_t *array, size_t size, bool indefinite, const uint8
     size_t len = 0;
     /* Start array */
     if (indefinite) {
-        len = cbor_begin_indefinite_array(buffer, sizeof(buffer));
+        len = cboring_begin_indefinite_array(buffer, sizeof(buffer));
     } else {
-        len = cbor_begin_definite_array(buffer, sizeof(buffer), size);
+        len = cboring_begin_definite_array(buffer, sizeof(buffer), size);
     }
 
     /* Add contents */
     for (size_t i = 0; i < size; i++) {
         /* In a real application remember to check the return value if the set succeeded */
-        len += cbor_set_int(buffer + len, sizeof(buffer) - len, array[i]);
+        len += cboring_set_int(buffer + len, sizeof(buffer) - len, array[i]);
     }
 
     /* End if indefinite */
     if (indefinite) {
-        len += cbor_end_indefinite_array(buffer + len, sizeof(buffer) - len);
+        len += cboring_end_indefinite_array(buffer + len, sizeof(buffer) - len);
     }
     /* Evaluate buffer */
     printf("Encoding result for array\n");
