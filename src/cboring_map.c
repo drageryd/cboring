@@ -41,7 +41,7 @@ size_t cbor_map_get(const uint8_t *buffer, size_t len, const char *key) {
     const size_t map_length = cbor_map_length(buffer, len);
     for (size_t i = 0; i < map_length; i++) {
         /* Compare key */
-        if (cbor_is_string(buffer + map_offset, len - map_offset)) {
+        if (cbor_is_text_string(buffer + map_offset, len - map_offset)) {
             const char *map_key = (const char *)cbor_get_string_handle(buffer + map_offset, len - map_offset);
             const size_t map_key_length = cbor_get_string_length(buffer + map_offset, len - map_offset);
             if (map_key_length == strlen(key) && strncmp(key, map_key, map_key_length) == 0) {

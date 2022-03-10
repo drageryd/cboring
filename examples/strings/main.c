@@ -11,7 +11,7 @@ uint8_t test_string[] = {0x6C, 0x48, 0x65, 0x6C, 0x6C, 0x6F, 0x20, 0x57, 0x6F, 0
 
 void test_decode(const uint8_t *buffer, size_t len, const char *expected) {
     printf("This is a string (%s) and should be \"%s\": %.*s\n",
-           cbor_is_string(buffer, len) ? "yes" : "no",
+           cbor_is_text_string(buffer, len) ? "yes" : "no",
            expected,
            (int)cbor_get_string_length(buffer, len),
            cbor_get_string_handle(buffer, len));
@@ -28,7 +28,7 @@ void print_buffer(const uint8_t *buffer, size_t len) {
 
 void test_encode(const char *val, const uint8_t *expected, size_t elen) {
     uint8_t buffer[256];
-    size_t len = cbor_set_string(buffer, sizeof(buffer), val);
+    size_t len = cbor_set_text_string(buffer, sizeof(buffer), val);
     /* Evaluate buffer */
     printf("Encoding result for %s: \n", val);
     printf(" Should be: ");

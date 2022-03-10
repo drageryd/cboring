@@ -31,10 +31,27 @@ size_t decode(const uint8_t *hex, size_t hex_len, char *dest, size_t dest_len) {
         len += r;
     }
     /* Decode string */
-    else if (cbor_is_string(hex, hex_len)) {
+    else if (cbor_is_text_string(hex, hex_len)) {
         size_t r = snprintf(dest, dest_len, "\"%.*s\"",
                             (int)cbor_get_string_length(hex, hex_len),
                             cbor_get_string_handle(hex, hex_len));
+        if (r == 0) {
+            return 0;
+        }
+        len += r;
+    }
+    else if (cbor_is_byte_string(hex, hex_len)) {
+        size_t r = snprintf(dest, dest_len, "h'");
+        size_t l = cbor_get_string_length(hex, hex_len);
+        const uint8_t *str = cbor_get_string_handle(hex, hex_len);
+        for (size_t i = 0; i < l; i++) {
+            size_t t = snprintf(dest + r, dest_len - r, "%02X", str[i]);
+            if (t == 0) {
+                return 0;
+            }
+            r += t;
+        }
+        r += snprintf(dest + r, dest_len - r, "'");
         if (r == 0) {
             return 0;
         }

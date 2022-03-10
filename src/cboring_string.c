@@ -2,12 +2,20 @@
 #include "cboring_internal.h"
 #include <string.h>
 
-/* Check if item is a string */
-bool cbor_is_string(const uint8_t *buffer, size_t len) {
+/* The support for indefinite strings is limited so for now
+ * the _is_ functions return false if indefinite */
+bool cbor_is_text_string(const uint8_t *buffer, size_t len) {
     uint64_t argument;
     cbor_get_argument(buffer, len, &argument);
-    return MAJOR_TYPE(buffer) == CBOR_BYTE_STRING ||
-        MAJOR_TYPE(buffer) == CBOR_TEXT_STRING;
+    return MAJOR_TYPE(buffer) == CBOR_TEXT_STRING &&
+        ADDITIONAL_INFO(buffer) != CBOR_INDEFINITE;
+}
+
+bool cbor_is_byte_string(const uint8_t *buffer, size_t len) {
+    uint64_t argument;
+    cbor_get_argument(buffer, len, &argument);
+    return MAJOR_TYPE(buffer) == CBOR_BYTE_STRING &&
+        ADDITIONAL_INFO(buffer) != CBOR_INDEFINITE;
 }
 
 /* Get any string type */
@@ -46,14 +54,11 @@ size_t cbor_get_string_length(const uint8_t *buffer, size_t len) {
 }
 
 /* Encode a null terminated string */
-size_t cbor_set_string(uint8_t *buffer, size_t maxlen, const char *str)
+size_t cbor_set_text_string(uint8_t *buffer, size_t maxlen, const char *str)
 {
     /* Store the length as argument
      * maxlen is subtracted to account for length of string */
     const size_t sl = strlen(str);
-    if (maxlen < sl) {
-        return 0;
-    }
     size_t al = cbor_set_argument(buffer, maxlen - sl, CBOR_TEXT_STRING, sl);
 
     /* If buffer cant hold string, abort */
@@ -64,4 +69,21 @@ size_t cbor_set_string(uint8_t *buffer, size_t maxlen, const char *str)
     /* Store string in following bytes */
     memcpy(buffer + al, str, sl);
     return al + sl;
+}
+
+/* Encode a byte string with length */
+size_t cbor_set_byte_string(uint8_t *buffer, size_t maxlen, const uint8_t *str, size_t len)
+{
+    /* Store the length as argument
+     * maxlen is subtracted to account for length of string */
+    size_t al = cbor_set_argument(buffer, maxlen - len, CBOR_BYTE_STRING, len);
+
+    /* If buffer cant hold string, abort */
+    if (al == 0) {
+        return 0;
+    }
+
+    /* Store string in following bytes */
+    memcpy(buffer + al, str, len);
+    return al + len;
 }
