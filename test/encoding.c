@@ -15,6 +15,7 @@
 #include <stddef.h>
 #include <string.h>
 #include <stdio.h>
+#include "cboring_float.h"
 #include "unity.h"
 #include "cboring.h"
 
@@ -352,7 +353,7 @@ void encode_test_021(void) {
     uint8_t buffer[9];
     size_t len = 0;
     printf("\nEncode test 021\nInput: %s\n", diag);
-    len += cbor_set_float(buffer + len, sizeof(buffer) - len, 1.1);
+    len += cbor_set_double(buffer + len, sizeof(buffer) - len, 1.1);
     printf("Expecting: ");
     print_buffer(hex, sizeof(hex));
     printf("\nEncoded  : ");
@@ -427,7 +428,7 @@ void encode_test_026(void) {
     uint8_t buffer[9];
     size_t len = 0;
     printf("\nEncode test 026\nInput: %s\n", diag);
-    len += cbor_set_float(buffer + len, sizeof(buffer) - len, 1e+300);
+    len += cbor_set_double(buffer + len, sizeof(buffer) - len, 1e+300);
     printf("Expecting: ");
     print_buffer(hex, sizeof(hex));
     printf("\nEncoded  : ");
@@ -487,7 +488,7 @@ void encode_test_030(void) {
     uint8_t buffer[9];
     size_t len = 0;
     printf("\nEncode test 030\nInput: %s\n", diag);
-    len += cbor_set_float(buffer + len, sizeof(buffer) - len, -4.1);
+    len += cbor_set_double(buffer + len, sizeof(buffer) - len, -4.1);
     printf("Expecting: ");
     print_buffer(hex, sizeof(hex));
     printf("\nEncoded  : ");

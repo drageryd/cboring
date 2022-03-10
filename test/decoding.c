@@ -284,8 +284,8 @@ void decode_test_017(void) {
 
 void decode_test_018(void) {
     const uint8_t hex[] = {0xf9, 0x00, 0x00};
-    const char *diag = "0.0";
-    char dest[4];
+    const char *diag = "0.000000e+00";
+    char dest[13];
     printf("\nDecode test 018\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -298,8 +298,8 @@ void decode_test_018(void) {
 
 void decode_test_019(void) {
     const uint8_t hex[] = {0xf9, 0x80, 0x00};
-    const char *diag = "-0.0";
-    char dest[5];
+    const char *diag = "-0.000000e+00";
+    char dest[14];
     printf("\nDecode test 019\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -312,8 +312,8 @@ void decode_test_019(void) {
 
 void decode_test_020(void) {
     const uint8_t hex[] = {0xf9, 0x3c, 0x00};
-    const char *diag = "1.0";
-    char dest[4];
+    const char *diag = "1.000000e+00";
+    char dest[13];
     printf("\nDecode test 020\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -326,8 +326,8 @@ void decode_test_020(void) {
 
 void decode_test_021(void) {
     const uint8_t hex[] = {0xfb, 0x3f, 0xf1, 0x99, 0x99, 0x99, 0x99, 0x99, 0x9a};
-    const char *diag = "1.1";
-    char dest[4];
+    const char *diag = "1.100000e+00";
+    char dest[13];
     printf("\nDecode test 021\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -340,8 +340,8 @@ void decode_test_021(void) {
 
 void decode_test_022(void) {
     const uint8_t hex[] = {0xf9, 0x3e, 0x00};
-    const char *diag = "1.5";
-    char dest[4];
+    const char *diag = "1.500000e+00";
+    char dest[13];
     printf("\nDecode test 022\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -354,8 +354,8 @@ void decode_test_022(void) {
 
 void decode_test_023(void) {
     const uint8_t hex[] = {0xf9, 0x7b, 0xff};
-    const char *diag = "65504.0";
-    char dest[8];
+    const char *diag = "6.550400e+04";
+    char dest[13];
     printf("\nDecode test 023\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -368,8 +368,8 @@ void decode_test_023(void) {
 
 void decode_test_024(void) {
     const uint8_t hex[] = {0xfa, 0x47, 0xc3, 0x50, 0x00};
-    const char *diag = "100000.0";
-    char dest[9];
+    const char *diag = "1.000000e+05";
+    char dest[13];
     printf("\nDecode test 024\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -382,8 +382,8 @@ void decode_test_024(void) {
 
 void decode_test_025(void) {
     const uint8_t hex[] = {0xfa, 0x7f, 0x7f, 0xff, 0xff};
-    const char *diag = "3.4028234663852886e+38";
-    char dest[23];
+    const char *diag = "3.402823e+38";
+    char dest[13];
     printf("\nDecode test 025\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -396,8 +396,8 @@ void decode_test_025(void) {
 
 void decode_test_026(void) {
     const uint8_t hex[] = {0xfb, 0x7e, 0x37, 0xe4, 0x3c, 0x88, 0x00, 0x75, 0x9c};
-    const char *diag = "1e+300";
-    char dest[7];
+    const char *diag = "1.000000e+300";
+    char dest[14];
     printf("\nDecode test 026\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -410,8 +410,8 @@ void decode_test_026(void) {
 
 void decode_test_027(void) {
     const uint8_t hex[] = {0xf9, 0x00, 0x01};
-    const char *diag = "5.960464477539063e-08";
-    char dest[22];
+    const char *diag = "5.960464e-08";
+    char dest[13];
     printf("\nDecode test 027\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -424,8 +424,8 @@ void decode_test_027(void) {
 
 void decode_test_028(void) {
     const uint8_t hex[] = {0xf9, 0x04, 0x00};
-    const char *diag = "6.103515625e-05";
-    char dest[16];
+    const char *diag = "6.103516e-05";
+    char dest[13];
     printf("\nDecode test 028\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -438,8 +438,8 @@ void decode_test_028(void) {
 
 void decode_test_029(void) {
     const uint8_t hex[] = {0xf9, 0xc4, 0x00};
-    const char *diag = "-4.0";
-    char dest[5];
+    const char *diag = "-4.000000e+00";
+    char dest[14];
     printf("\nDecode test 029\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -452,8 +452,8 @@ void decode_test_029(void) {
 
 void decode_test_030(void) {
     const uint8_t hex[] = {0xfb, 0xc0, 0x10, 0x66, 0x66, 0x66, 0x66, 0x66, 0x66};
-    const char *diag = "-4.1";
-    char dest[5];
+    const char *diag = "-4.100000e+00";
+    char dest[14];
     printf("\nDecode test 030\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -466,8 +466,8 @@ void decode_test_030(void) {
 
 void decode_test_031(void) {
     const uint8_t hex[] = {0xf9, 0x7c, 0x00};
-    const char *diag = "Infinity";
-    char dest[9];
+    const char *diag = "inf";
+    char dest[4];
     printf("\nDecode test 031\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -480,7 +480,7 @@ void decode_test_031(void) {
 
 void decode_test_032(void) {
     const uint8_t hex[] = {0xf9, 0x7e, 0x00};
-    const char *diag = "NaN";
+    const char *diag = "nan";
     char dest[4];
     printf("\nDecode test 032\nBuffer: ");
     print_buffer(hex, sizeof(hex));
@@ -494,8 +494,8 @@ void decode_test_032(void) {
 
 void decode_test_033(void) {
     const uint8_t hex[] = {0xf9, 0xfc, 0x00};
-    const char *diag = "-Infinity";
-    char dest[10];
+    const char *diag = "-inf";
+    char dest[5];
     printf("\nDecode test 033\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -508,8 +508,8 @@ void decode_test_033(void) {
 
 void decode_test_034(void) {
     const uint8_t hex[] = {0xfa, 0x7f, 0x80, 0x00, 0x00};
-    const char *diag = "Infinity";
-    char dest[9];
+    const char *diag = "inf";
+    char dest[4];
     printf("\nDecode test 034\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -522,7 +522,7 @@ void decode_test_034(void) {
 
 void decode_test_035(void) {
     const uint8_t hex[] = {0xfa, 0x7f, 0xc0, 0x00, 0x00};
-    const char *diag = "NaN";
+    const char *diag = "nan";
     char dest[4];
     printf("\nDecode test 035\nBuffer: ");
     print_buffer(hex, sizeof(hex));
@@ -536,8 +536,8 @@ void decode_test_035(void) {
 
 void decode_test_036(void) {
     const uint8_t hex[] = {0xfa, 0xff, 0x80, 0x00, 0x00};
-    const char *diag = "-Infinity";
-    char dest[10];
+    const char *diag = "-inf";
+    char dest[5];
     printf("\nDecode test 036\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -550,8 +550,8 @@ void decode_test_036(void) {
 
 void decode_test_037(void) {
     const uint8_t hex[] = {0xfb, 0x7f, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-    const char *diag = "Infinity";
-    char dest[9];
+    const char *diag = "inf";
+    char dest[4];
     printf("\nDecode test 037\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -564,7 +564,7 @@ void decode_test_037(void) {
 
 void decode_test_038(void) {
     const uint8_t hex[] = {0xfb, 0x7f, 0xf8, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-    const char *diag = "NaN";
+    const char *diag = "nan";
     char dest[4];
     printf("\nDecode test 038\nBuffer: ");
     print_buffer(hex, sizeof(hex));
@@ -578,8 +578,8 @@ void decode_test_038(void) {
 
 void decode_test_039(void) {
     const uint8_t hex[] = {0xfb, 0xff, 0xf0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
-    const char *diag = "-Infinity";
-    char dest[10];
+    const char *diag = "-inf";
+    char dest[5];
     printf("\nDecode test 039\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -844,7 +844,7 @@ void decode_test_057(void) {
 
 void decode_test_058(void) {
     const uint8_t hex[] = {0x62, 0x22, 0x5c};
-    const char *diag = "\"\\\"\\\\\"";
+    const char *diag = "\"\"\\\"";
     char dest[7];
     printf("\nDecode test 058\nBuffer: ");
     print_buffer(hex, sizeof(hex));
@@ -858,8 +858,8 @@ void decode_test_058(void) {
 
 void decode_test_059(void) {
     const uint8_t hex[] = {0x62, 0xc3, 0xbc};
-    const char *diag = "\"\\u00fc\"";
-    char dest[9];
+    const char *diag = "\"\u00fc\"";
+    char dest[5];
     printf("\nDecode test 059\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
@@ -872,8 +872,8 @@ void decode_test_059(void) {
 
 void decode_test_060(void) {
     const uint8_t hex[] = {0x63, 0xe6, 0xb0, 0xb4};
-    const char *diag = "\"\\u6c34\"";
-    char dest[9];
+    const char *diag = "\"\u6c34\"";
+    char dest[6];
     printf("\nDecode test 060\nBuffer: ");
     print_buffer(hex, sizeof(hex));
     printf("\nExpecting: %s (%zu)\n", diag, strlen(diag));
