@@ -1,5 +1,6 @@
 #include "cboring_float.h"
 #include "cboring_internal.h"
+#include <math.h>
 
 union float_argument {
     float f;
@@ -20,9 +21,19 @@ bool cbor_is_half(const uint8_t *buffer, size_t len) {
 float cbor_get_half(const uint8_t *buffer, size_t len) {
     uint64_t argument;
     cbor_get_argument(buffer, len, &argument);
-    union float_argument fa;
-    fa.u32 = (uint32_t)argument;
-    return fa.f;
+    /* Half precision conversion from Appendix D, float instead of double
+     * https://www.rfc-editor.org/rfc/rfc8949.html#section-appendix.d */
+    unsigned int exp = (argument >> 10) & 0x1f;
+    unsigned int mant = argument & 0x3ff;
+    float val;
+    if (exp == 0) {
+        val = ldexpf(mant, -24);
+    } else if (exp != 31) {
+        val = ldexpf(mant + 1024, exp - 25);
+    } else {
+        val = (mant == 0) ? INFINITY : NAN;
+    }
+    return (argument & 0x8000) ? -val : val;
 }
 
 bool cbor_is_float(const uint8_t *buffer, size_t len) {

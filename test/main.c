@@ -58,6 +58,13 @@ size_t decode(const uint8_t *hex, size_t hex_len, char *dest, size_t dest_len) {
         len += r;
     }
     /* Decode floats */
+    else if (cbor_is_half(hex, hex_len)) {
+        size_t r = snprintf(dest, dest_len, "%e", cbor_get_half(hex, hex_len));
+        if (r == 0) {
+            return 0;
+        }
+        len += r;
+    }
     else if (cbor_is_float(hex, hex_len)) {
         size_t r = snprintf(dest, dest_len, "%e", cbor_get_float(hex, hex_len));
         if (r == 0) {
